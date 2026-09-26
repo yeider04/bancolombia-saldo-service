@@ -1,0 +1,7 @@
+version: '3.8'
+
+services:
+  servicio-saldo:
+    build: .
+    image: saldo-service:1.0
+    container_name: bancolombia_saldo_app

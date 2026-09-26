@@ -1,0 +1,33 @@
+name: Pipeline CI Bancolombia Saldo Service
+
+# 1. TRIGGER: Ejecutar cuando haya push o pull request a la rama main
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Paso 1: Clonar el código del repositorio
+      - name: Descargar codigo fuente
+        uses: actions/checkout@v3
+
+      # Paso 2: Configurar entorno Python
+      - name: Configurar Python 3.9
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.9"
+
+      # Paso 3: Simular ejecución del microservicio
+      - name: Validar ejecucion del script
+        run: |
+          python saldo.py
+
+      # Paso 4: Construir la imagen Docker para verificar empaquetado
+      - name: Construir Imagen Docker
+        run: |
+          docker build -t saldo-service:${{ github.sha }} .
